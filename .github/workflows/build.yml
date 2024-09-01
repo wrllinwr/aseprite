@@ -6,13 +6,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latestt]
+        os: [windows-latest]
         build_type: [Release]
-        enable_ui: [on]
-        include:
-          - os: windows-latest
-            build_type: Release
-            enable_ui: on
+        ui: [gui]
+        scripting: [lua]
+        exclude:
+          - build_type: Debug
+            ui: gui
+          - build_type: RelWithDebInfo
+            ui: cli
+          - build_type: RelWithDebInfo
+            scripting: noscripts
     steps:
     - uses: actions/checkout@v4
       with:
@@ -91,9 +95,9 @@ jobs:
       shell: bash
       run: |
         cd build && ninja
-   - uses: actions/upload-artifact@v4
-      with:
-        name: aseprite
-        path: |
-          D:/a/aseprite/aseprite/build/bin/data
-          D:/a/aseprite/aseprite/build/bin/aseprite.exe
+    - uses: actions/upload-artifact@v4  
+      with:
+       name: aseprite
+       path: |
+          D:/a/aseprite/aseprite/build/bin/data
+          D:/a/aseprite/aseprite/build/bin/aseprite.exe
